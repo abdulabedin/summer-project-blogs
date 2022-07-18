@@ -1,5 +1,7 @@
 on: 
   workflow_dispatch
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   markdownList:
     name: List open issues labeled "release"
