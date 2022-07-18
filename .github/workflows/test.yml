@@ -3,10 +3,12 @@ on:
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  markdownList:
+  ListIssues:
     name: List open issues labeled "release"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Show matching issues
         run: |
           for url in $(gh issue list --label "release" --json number -q '.[] | .number')
