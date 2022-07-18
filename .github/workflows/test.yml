@@ -10,3 +10,5 @@ jobs:
         with:
           query: 'label:release is:open'
           token: ${{ github.token }}
+      - name: Show matching issues
+        run: cat __matching-issues.txt
