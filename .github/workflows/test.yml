@@ -11,4 +11,8 @@ jobs:
           query: 'label:release is:open'
           token: ${{ github.token }}
       - name: Show matching issues
-        run: cat __matching-issues.txt
+        run: |
+          for url in $(cat ${{ steps.bugs.outputs.path }})
+          do
+            gh issue view --json body,title -q '.title, .body' $url
+          done
