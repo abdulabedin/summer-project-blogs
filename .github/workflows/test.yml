@@ -6,13 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: List release issues
+        id: list
         uses: lee-dohm/select-matching-issues@v1
         with:
           query: 'label:release is:open'
           token: ${{ github.token }}
       - name: Show matching issues
         run: |
-          for url in $(cat ${{ steps.bugs.outputs.path }})
+          for url in $(cat ${{ steps.list.outputs.path }})
           do
             gh issue view --json body,title -q '.title, .body' $url
           done
