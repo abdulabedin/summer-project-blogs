@@ -8,6 +8,5 @@ jobs:
       - name: List release issues
         uses: lee-dohm/select-matching-issues@v1
         with:
-          format: list
           query: 'label:release is:open'
           token: ${{ github.token }}
