@@ -1,3 +1,4 @@
+import sys
 import requests
 import json
 
@@ -26,9 +27,14 @@ def make_feature_content(titles): # TODO
     return "\n".join(content)
 
 def main():
-    version = "22008"
-    is_beta = version.endswith("beta")
-    ISSUE_URL = f"https://api.github.com/repos/OpenLiberty/open-liberty/issues?labels=blog,target:{version}"
+    if len(sys.argv) != 2:
+        print("Exact 1 argument (version number) must be provided!", file=sys.stderr)
+        exit(1);
+
+    version = sys.argv[1]
+    version_no_dots = version.replace('.', '');
+    is_beta = version_no_dots.endswith("beta")
+    ISSUE_URL = f"https://api.github.com/repos/OpenLiberty/open-liberty/issues?labels=blog,target:{version_no_dots}"
 
     issues = json.loads(requests.get(ISSUE_URL).text)
     titles = get_titles(issues, is_beta)
@@ -56,11 +62,14 @@ def main():
 ----'''
 
     template = requests.get(TEMPLATE_URL).text;
+    # maybe chain those replace calls?
     template = template.replace(FEATURE_LIST_SECTION, make_feature_list(titles))
     template = template.replace(FEATURE_CONTENT_SECTION, make_feature_content(titles))
-    # TODO: replace RELEASE_VERSION
+    template = template.replace("RELEASE_VERSION", version)
 
-    with open("output.adoc", "w") as fp:
+    # TODO: deal with date and post title to comply filename format
+    filename = f"{'beta' if is_beta else 'ga'}-release-post-{version}.adoc"
+    with open(f"posts/{filename}", "w") as fp:
         fp.write(template)
 
 if __name__ == "__main__":
