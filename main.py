@@ -98,7 +98,7 @@ def main():
             bugs.append(f'* link:{issue["html_url"]}[issue["title"]]')
         template = template.replace(GA_TOC_SECTION, toc) \
                            .replace('RELEASE_VERSION_NO_PERIOD', version_no_dots) \
-                           .replace(BUG_ANCHOR, f'{BUG_ANCHOR}{"\".join(bugs)}')
+#                            .replace(BUG_ANCHOR, f'{BUG_ANCHOR}{"\".join(bugs)}')
         template = re.sub('[#TAG_1].*//Add the introduction to the feature and description here', content, template, flags=re.DOTALL)
 
     template = template.replace("RELEASE_VERSION", version) \
